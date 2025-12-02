@@ -2,18 +2,21 @@ import 'package:flutter/material.dart';
 import 'screens/welcome_screen.dart';
 
 void main() {
-  runApp(const CreoleCompanion());
+  runApp(const CreoleCompanionApp());
 }
 
-class CreoleCompanion extends StatelessWidget {
-  const CreoleCompanion({super.key});
+class CreoleCompanionApp extends StatelessWidget {
+  const CreoleCompanionApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
       title: 'Creole Companion',
-      theme: ThemeData(fontFamily: 'Arial'),
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        scaffoldBackgroundColor: Colors.white,
+      ),
       home: const WelcomeScreen(),
     );
   }
