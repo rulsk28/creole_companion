@@ -6,7 +6,7 @@ class TranslateApiService {
   static const String _baseUrl =
       "https://translation.googleapis.com/language/translate/v2";
 
-  /// Fallback Google API translation
+  
   static Future<String?> translateText({
     required String text,
     required String targetLanguageCode,

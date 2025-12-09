@@ -1,21 +1,27 @@
 import 'package:flutter/material.dart';
 import 'screens/welcome_screen.dart';
+import 'services/audio_controller.dart';
 
-void main() {
-  runApp(const CreoleCompanionApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  
+  await AudioController().init();
+
+  runApp(const MyApp());
 }
 
-class CreoleCompanionApp extends StatelessWidget {
-  const CreoleCompanionApp({super.key});
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Creole Companion',
       debugShowCheckedModeBanner: false,
+      title: 'Creole Companion',
       theme: ThemeData(
         primarySwatch: Colors.blue,
-        scaffoldBackgroundColor: Colors.white,
+        useMaterial3: true,
       ),
       home: const WelcomeScreen(),
     );

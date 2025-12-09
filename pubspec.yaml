@@ -1,5 +1,5 @@
 name: creole_companion
-description: "Creole Companion - English ↔ Haitian Creole desktop translator"
+description: "Creole Companion - English ↔ Haitian Creole Translator"
 publish_to: 'none'
 
 version: 1.0.0+1
@@ -16,6 +16,8 @@ dependencies:
   path_provider: ^2.1.5
   sqlite3: ^2.9.3
   cupertino_icons: ^1.0.8
+  speech_to_text: ^6.6.1
+  audioplayers: ^6.1.0   
 
 dev_dependencies:
   flutter_test:
@@ -24,7 +26,11 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+
   assets:
     - assets/images/citadelle.jpg
     - assets/images/ile_a_rat.jpg
     - assets/images/port_salut.jpg
+    - assets/audio/le_mal_du_pays.mp3   
+
+

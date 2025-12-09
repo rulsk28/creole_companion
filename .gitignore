@@ -43,3 +43,6 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# prevent API keys  from leaking
+lib/services/api_keys.dart

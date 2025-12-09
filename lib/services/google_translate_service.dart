@@ -2,10 +2,15 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
-class GoogleTranslateService {
-  static const String _apiKey = 'AIzaSyCfJ679-hZ1NskronNmXmhfYPgFqzKApyg';
+import 'api_keys.dart';
 
-  static bool get isConfigured => _apiKey.trim().isNotEmpty;
+class GoogleTranslateService {
+ 
+  static String get _apiKey => ApiKeys.googleTranslateApiKey;
+
+
+
+  static bool get isConfigured => _apiKey.isNotEmpty;
 
   static Future<String?> translate({
     required String text,
@@ -13,7 +18,9 @@ class GoogleTranslateService {
     required String to,
   }) async {
     if (!isConfigured) {
-      debugPrint('⚠ GoogleTranslateService: API key missing.');
+      debugPrint(
+        'GoogleTranslateService: No API key found — skipping API translation.',
+      );
       return null;
     }
 
@@ -34,19 +41,19 @@ class GoogleTranslateService {
       );
 
       if (response.statusCode == 200) {
-        final data = jsonDecode(response.body) as Map<String, dynamic>;
-        final translations = data['data']['translations'] as List<dynamic>;
+        final json = jsonDecode(response.body) as Map<String, dynamic>;
+        final translations = json['data']['translations'] as List<dynamic>;
 
         if (translations.isNotEmpty) {
           return translations.first['translatedText'] as String?;
         }
       } else {
         debugPrint(
-          '❌ GoogleTranslateService error: ${response.statusCode} - ${response.body}',
+          "GoogleTranslateService ERROR ${response.statusCode}: ${response.body}",
         );
       }
     } catch (e) {
-      debugPrint('❌ GoogleTranslateService exception: $e');
+      debugPrint("GoogleTranslateService EXCEPTION: $e");
     }
 
     return null;

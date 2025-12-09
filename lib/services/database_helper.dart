@@ -20,9 +20,6 @@ class DatabaseHelper {
     return _db!;
   }
 
-  // ---------------------------------------------
-  // CREATE TABLES
-  // ---------------------------------------------
   void _createTables(Database db) {
     db.execute("""
       CREATE TABLE IF NOT EXISTS translations (
@@ -42,27 +39,15 @@ class DatabaseHelper {
       );
     """);
 
-    db.execute("""
-      CREATE TABLE IF NOT EXISTS favorites (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        input_text TEXT NOT NULL,
-        output_text TEXT NOT NULL,
-        direction TEXT NOT NULL
-      );
-    """);
-
     final count = db
         .select("SELECT COUNT(*) AS c FROM translations")
         .first['c'];
-
     if (count == 0) {
       _insertDefaults(db);
     }
   }
 
-  // ---------------------------------------------
-  // INSERT DEFAULT 100 TRANSLATIONS
-  // ---------------------------------------------
+ 
   void _insertDefaults(Database db) {
     final stmt = db.prepare(
       "INSERT INTO translations (english, creole) VALUES (?, ?)",
@@ -75,56 +60,89 @@ class DatabaseHelper {
       ["Good afternoon", "Bonswa"],
       ["Good evening", "Bonswa"],
       ["Good night", "Bon nwit"],
+      ["How are you?", "Kijan ou ye?"],
+      ["What is your name?", "Kijan ou rele?"],
+      ["My name is John", "Non mwen se John"],
+      ["Nice to meet you", "Mwen kontan fè konesans avè w"],
       ["Thank you", "Mèsi"],
       ["Thank you very much", "Mèsi anpil"],
+      ["You are welcome", "Pa gen pwoblèm"],
       ["Please", "Tanpri"],
+      ["Excuse me", "Eskize m"],
+      ["I am sorry", "Mwen regrèt"],
       ["Yes", "Wi"],
       ["No", "Non"],
       ["Maybe", "Petèt"],
-      ["Excuse me", "Eskize m"],
-      ["Sorry", "Mwen regrèt"],
-      ["How are you?", "Kijan ou ye?"],
-      ["I'm fine", "Mwen byen"],
-      ["See you later", "Na wè pita"],
-      ["See you tomorrow", "Na wè demen"],
-      ["I love you", "Mwen renmen ou"],
-      ["I miss you", "Ou manke mwen"],
+      ["I do not understand", "Mwen pa konprann"],
+      ["I understand", "Mwen konprann"],
+      ["Do you speak English?", "Eske ou pale Anglè?"],
+      ["Do you speak Creole?", "Eske ou pale Kreyòl?"],
+      ["I speak a little Creole", "Mwen pale yon ti kras Kreyòl"],
+      ["I am learning Creole", "Mwen ap aprann Kreyòl"],
       ["Where are you from?", "Ou soti ki kote?"],
       ["I am from Haiti", "Mwen soti Ayiti"],
       ["Where do you live?", "Ki kote ou rete?"],
       ["I live in New Jersey", "Mwen rete New Jersey"],
+      ["How old are you?", "Ki laj ou?"],
       ["I am hungry", "Mwen grangou"],
       ["I am thirsty", "Mwen swaf"],
       ["I am tired", "Mwen fatige"],
-      ["I understand", "Mwen konprann"],
-      ["I don't understand", "Mwen pa konprann"],
-      ["Help me", "Ede m"],
+      ["I am sick", "Mwen malad"],
+      ["I am happy", "Mwen kontan"],
+      ["I am sad", "Mwen tris"],
+      ["I love you", "Mwen renmen ou"],
+      ["I miss you", "Ou manke mwen"],
+      ["See you later", "Na wè pita"],
+      ["See you tomorrow", "Na wè demen"],
+      ["Good luck", "Bon chans"],
+      ["Be careful", "Pran prekosyon"],
+      ["What time is it?", "Kilè li ye?"],
       ["Where is the bathroom?", "Kote twalèt la?"],
       ["Where is the hospital?", "Kote lopital la?"],
       ["Call the police", "Rele lapolis"],
-      ["Stop", "Sispann"],
-      ["Come here", "Vin isi"],
-      ["Go there", "Ale la"],
-      ["What time is it?", "Kilè li ye?"],
-      ["How much is this?", "Konbyen sa koute?"],
+      ["I need help", "Mwen bezwen èd"],
       ["I need water", "Mwen bezwen dlo"],
-      ["I'm sick", "Mwen malad"],
-      ["I'm happy", "Mwen kontan"],
-      ["I'm sad", "Mwen tris"],
-      ["Good luck", "Bon chans"],
-      ["Be careful", "Pran prekosyon"],
-      ["Congratulations", "Felisitasyon"],
+      ["Stop", "Sispann"],
+      ["Go", "Ale"],
+      ["Wait", "Tann"],
+      ["Come here", "Vini isit la"],
+      ["Where are you?", "Kote ou ye?"],
+      ["I am coming", "Mwen prale"],
+      ["I don’t know", "Mwen pa konnen"],
+      ["I know", "Mwen konnen"],
+      ["What happened?", "Kisa ki pase?"],
+      ["I’m on my way", "Mwen sou wout la"],
+      ["Help me please", "Ede m tanpri"],
+      ["It hurts", "Sa fè m mal"],
+      ["How much is it?", "Konbyen li koute?"],
+      ["Too expensive", "Twò chè"],
+      ["Do you have food?", "Eske ou gen manje?"],
+      ["I am lost", "Mwen pèdi"],
+      ["I need a doctor", "Mwen bezwen yon doktè"],
+      ["Call my family", "Rele fanmi mwen"],
+      ["Be quiet", "Fè silans"],
+      ["Stop talking", "Sispann pale"],
+      ["Open the door", "Louvri pòt la"],
+      ["Close the door", "Fèmen pòt la"],
+      ["I am outside", "Mwen deyò"],
+      ["I am inside", "Mwen andedan"],
+      ["Come inside", "Antre"],
+      ["Go outside", "Soti deyò"],
+      ["I’m ready", "Mwen pare"],
+      ["Not yet", "Pa ankò"],
+      ["I agree", "Mwen dakò"],
+      ["I disagree", "Mwen pa dakò"],
+      ["What do you want?", "Kisa ou vle?"],
+      ["I want food", "Mwen vle manje"],
+      ["I want water", "Mwen vle dlo"],
     ];
 
-    for (var row in translations) {
-      stmt.execute(row);
+    for (var t in translations) {
+      stmt.execute(t);
     }
     stmt.dispose();
   }
 
-  // ---------------------------------------------
-  // LOCAL TRANSLATION LOOKUP
-  // ---------------------------------------------
   Future<String?> getCreole(String english) async {
     final db = await database;
     final res = db.select(
@@ -143,20 +161,17 @@ class DatabaseHelper {
     return res.isEmpty ? null : res.first['english'] as String;
   }
 
-  // ---------------------------------------------
-  // HISTORY
-  // ---------------------------------------------
   Future<void> saveHistory(
     String input,
     String output,
     String direction,
   ) async {
     final db = await database;
-    final time = DateTime.now().toLocal().toString().split(".").first;
+    final now = DateTime.now().toLocal().toString().split('.').first;
 
     db.execute(
       "INSERT INTO history (input_text, output_text, direction, timestamp) VALUES (?, ?, ?, ?)",
-      [input, output, direction, time],
+      [input, output, direction, now],
     );
   }
 
@@ -166,29 +181,11 @@ class DatabaseHelper {
     return rows.map((e) => e).toList();
   }
 
-  // ---------------------------------------------
-  // FAVORITES
-  // ---------------------------------------------
-  Future<void> addFavorite(
-    String input,
-    String output,
-    String direction,
-  ) async {
-    final db = await database;
-    db.execute(
-      "INSERT INTO favorites (input_text, output_text, direction) VALUES (?, ?, ?)",
-      [input, output, direction],
-    );
-  }
-
-  Future<void> removeFavorite(int id) async {
-    final db = await database;
-    db.execute("DELETE FROM favorites WHERE id=?", [id]);
-  }
-
   Future<List<Map<String, Object?>>> getFavorites() async {
     final db = await database;
-    final rows = db.select("SELECT * FROM favorites ORDER BY id DESC");
-    return rows.map((e) => e).toList();
+    final rows = db.select(
+      "SELECT english, creole FROM translations ORDER BY english ASC",
+    );
+    return rows.map((r) => r).toList();
   }
 }

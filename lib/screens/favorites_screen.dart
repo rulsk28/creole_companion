@@ -23,33 +23,96 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
     setState(() => _favorites = result);
   }
 
-  Future<void> _delete(int id) async {
-    await DatabaseHelper.instance.removeFavorite(id);
-    _loadFavorites();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Favorites")),
-      body: _favorites.isEmpty
-          ? const Center(
-              child: Text("No favorites yet.", style: TextStyle(fontSize: 18)),
-            )
-          : ListView.builder(
-              itemCount: _favorites.length,
-              itemBuilder: (_, i) {
-                final f = _favorites[i];
-                return ListTile(
-                  title: Text("${f['input_text']} → ${f['output_text']}"),
-                  subtitle: Text(f['direction'] as String),
-                  trailing: IconButton(
-                    icon: const Icon(Icons.delete, color: Colors.red),
-                    onPressed: () => _delete(f['id'] as int),
-                  ),
-                );
-              },
+      body: Stack(
+        children: [
+          Positioned.fill(
+            child: Image.asset(
+              'assets/images/ile_a_rat.jpg',
+              fit: BoxFit.cover,
             ),
+          ),
+
+          Container(color: Colors.black.withOpacity(0.45)),
+
+          SafeArea(
+            child: Column(
+              children: [
+                const SizedBox(height: 10),
+                const Text(
+                  "Favorites",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 26,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 20),
+
+                Expanded(
+                  child: _favorites.isEmpty
+                      ? const Center(
+                          child: Text(
+                            "No favorites yet.",
+                            style: TextStyle(color: Colors.white, fontSize: 18),
+                          ),
+                        )
+                      : ListView.builder(
+                          itemCount: _favorites.length,
+                          itemBuilder: (_, i) {
+                            final item = _favorites[i];
+                            return Container(
+                              margin: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                                vertical: 6,
+                              ),
+                              padding: const EdgeInsets.all(14),
+                              decoration: BoxDecoration(
+                                color: Colors.white.withOpacity(0.3),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    item['english'] as String,
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 6),
+                                  Text(
+                                    item['creole'] as String,
+                                    style: const TextStyle(
+                                      color: Colors.white70,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        ),
+                ),
+
+                ElevatedButton(
+                  onPressed: () => Navigator.pop(context),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    foregroundColor: Colors.black,
+                  ),
+                  child: const Text("Back"),
+                ),
+                const SizedBox(height: 12),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

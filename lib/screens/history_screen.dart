@@ -30,11 +30,13 @@ class _HistoryScreenState extends State<HistoryScreen> {
         children: [
           Positioned.fill(
             child: Image.asset(
-              'assets/images/port_salut.jpg', // ✅ FIXED filename
+              "assets/images/port_salut.jpg",
               fit: BoxFit.cover,
             ),
           ),
+
           Container(color: Colors.black.withOpacity(0.45)),
+
           SafeArea(
             child: Column(
               children: [
@@ -46,34 +48,69 @@ class _HistoryScreenState extends State<HistoryScreen> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                const SizedBox(height: 14),
+
+                const SizedBox(height: 18),
 
                 Expanded(
-                  child: ListView.builder(
-                    itemCount: _history.length,
-                    itemBuilder: (_, i) {
-                      final item = _history[i];
-                      return Container(
-                        margin: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 6,
-                        ),
-                        padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.25),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Text(
-                          "${item['input_text']} → ${item['output_text']}",
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
+                  child: _history.isEmpty
+                      ? const Center(
+                          child: Text(
+                            "No history yet.",
+                            style: TextStyle(color: Colors.white70),
                           ),
+                        )
+                      : ListView.builder(
+                          itemCount: _history.length,
+                          itemBuilder: (_, i) {
+                            final item = _history[i];
+
+                            return Container(
+                              margin: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                                vertical: 6,
+                              ),
+                              padding: const EdgeInsets.all(12),
+                              decoration: BoxDecoration(
+                                color: Colors.white.withOpacity(0.25),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "${item['input_text']} → ${item['output_text']}",
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 4),
+
+                                  Text(
+                                    item["direction"]?.toString() ?? "",
+                                    style: const TextStyle(
+                                      color: Colors.white70,
+                                      fontSize: 12,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 2),
+
+                                  Text(
+                                    item["timestamp"]?.toString() ?? "",
+                                    style: const TextStyle(
+                                      color: Colors.white54,
+                                      fontSize: 11,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
                         ),
-                      );
-                    },
-                  ),
                 ),
+
+                const SizedBox(height: 10),
 
                 ElevatedButton(
                   onPressed: () => Navigator.pop(context),
@@ -84,7 +121,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                   child: const Text("Back"),
                 ),
 
-                const SizedBox(height: 10),
+                const SizedBox(height: 12),
               ],
             ),
           ),

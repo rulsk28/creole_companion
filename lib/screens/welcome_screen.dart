@@ -15,36 +15,50 @@ class WelcomeScreen extends StatelessWidget {
               fit: BoxFit.cover,
             ),
           ),
+
           Container(color: Colors.black.withOpacity(0.4)),
+
           Center(
             child: Column(
-              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Text(
                   "Creole Companion",
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 42,
+                    fontSize: 34,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
+
                 const SizedBox(height: 20),
+
+                const Text(
+                  "English ↔ Haitian Creole Translator",
+                  style: TextStyle(color: Colors.white70, fontSize: 18),
+                ),
+
+                const SizedBox(height: 40),
+
                 ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    foregroundColor: Colors.black87,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 40,
-                      vertical: 14,
-                    ),
-                  ),
                   onPressed: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (_) => const HomeScreen()),
                     );
                   },
-                  child: const Text("Continue", style: TextStyle(fontSize: 18)),
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 40,
+                      vertical: 15,
+                    ),
+                    backgroundColor: Colors.white,
+                    foregroundColor: Colors.black,
+                  ),
+                  child: const Text(
+                    "Get Started",
+                    style: TextStyle(fontSize: 18),
+                  ),
                 ),
               ],
             ),

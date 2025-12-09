@@ -1,4 +1,4 @@
 class ApiKeys {
   static const String googleTranslateApiKey =
-      "AIzaSyCfJ679-hZ1NskronNmXmhfYPgFqzKApyg";
+      "AIzaSyCDKorZnzgnLhLNa7w940p28HL5QaPQSWA";
 }
